@@ -7,7 +7,7 @@ import os
 
 base_url = 'https://api.unsplash.com/'
 heads = {'Accept-Version':'v1'}
-app_id = 'b2b72af949a8f7f5cddfcadcebcbbbd8981be1d99d30261ea5deebf05c7fb54a'
+app_id = ''
 payload1 = {'client_id':app_id}
 username = sys.argv[1]
 user_profile_response = requests.get(base_url+'users/'+username,params = payload1, headers = heads)
