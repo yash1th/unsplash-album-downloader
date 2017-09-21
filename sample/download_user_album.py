@@ -7,11 +7,17 @@ import os
 
 base_url = 'https://api.unsplash.com/'
 heads = {'Accept-Version':'v1'}
-app_id = ''
-payload1 = {'client_id':app_id}
+app_id = 'b2b72af949a8f7f5cddfcadcebcbbbd8981be1d99d30261ea5deebf05c7fb54a'
+
+
+def get_response(url, payload, heads):
+    r = requests.get(url,params = payload, headers = heads)
+    data = json.loads(r.content.decode('utf-8'))
+    return data
+
+
 username = sys.argv[1]
-user_profile_response = requests.get(base_url+'users/'+username,params = payload1, headers = heads)
-user_profile_response = json.loads(user_profile_response.content.decode('utf-8'))
+user_profile_response = get_response(base_url+'users/'+username,{'client_id':app_id},heads)
 user_total_photos = user_profile_response['total_photos']
 user_fullname = user_profile_response['first_name']+' '+user_profile_response['last_name']
 total_pages = math.ceil(user_total_photos/30)
@@ -19,9 +25,8 @@ total_pages = math.ceil(user_total_photos/30)
 
 photo_ids = dict()
 for page_number in range(1,total_pages+1):
-    payload2 = {'client_id':app_id,'page':str(page_number),'per_page':'30'}
-    user_photos_list_response = requests.get(base_url+'users/'+username+'/photos/',params = payload2,headers = heads)
-    user_photos_list_response = json.loads(user_photos_list_response.content.decode('utf-8'))
+    payload1 = {'client_id':app_id,'page':str(page_number),'per_page':'30'}
+    user_photos_list_response = get_response(base_url+'users/'+username+'/photos/',payload1,heads)
     for i in user_photos_list_response:
         photo_ids[i['id']] = i['urls']['full']
 
