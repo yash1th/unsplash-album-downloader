@@ -1,0 +1,9 @@
+#Distribution/packagin
+lib/
+bin/
+
+#pip-selfcheck
+pip-selfcheck.json
+
+#configuration-files
+*.cfg
