@@ -8,7 +8,7 @@ import argparse
 
 base_url = 'https://api.unsplash.com/'
 heads = {'Accept-Version':'v1'}
-app_id = 'b2b72af949a8f7f5cddfcadcebcbbbd8981be1d99d30261ea5deebf05c7fb54a'
+app_id = '' #put your app id here
 mode_list= {'w':'raw','f':'full','r':'regular','s':'small','t':'thumb'}
 
 def parse_args():
@@ -47,13 +47,16 @@ def save_photos(photo_ids, name, mode):
 		for pid in photo_ids_local:
 			try:
 				del photo_ids[pid]
+				#print('deleted {} for requesting'.format(pid))
 			except KeyError:
-				print('no photo exists with that ID in unsplash')
+				print('no photo exists with the ID "{}" in unsplash'.format(pid))
 
 	for k,v in photo_ids.items():
 		photo_download_response = requests.get(photo_ids[k],stream = True)
 		with open(user_directory+r'/'+k+'.jpg', 'wb') as out_file:
 		    shutil.copyfileobj(photo_download_response.raw, out_file)
+
+	print('successfully downloaded {} photos in {} format'.format(len(photo_ids),mode))
 
 
 def get_photo_ids(username, total_photos, mode):
