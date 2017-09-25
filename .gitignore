@@ -1,6 +1,7 @@
 #Distribution/packagin
 lib/
 bin/
+include/
 
 #pip-selfcheck
 pip-selfcheck.json
