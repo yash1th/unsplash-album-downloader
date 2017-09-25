@@ -14,3 +14,6 @@ pip-selfcheck.json
 
 #ignore app_id.txt
 sample/app_id.txt
+
+#ignore scratch-work folder
+scratch-work/
