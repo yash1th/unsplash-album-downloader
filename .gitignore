@@ -7,3 +7,7 @@ pip-selfcheck.json
 
 #configuration-files
 *.cfg
+
+#system-generated files
+**/.DS_Store
+.DS_Store
