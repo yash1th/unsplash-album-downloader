@@ -6,6 +6,7 @@ import math
 import os
 import argparse
 
+
 BASE_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version':'v1'}
 APP_ID = ''
@@ -15,39 +16,33 @@ with open('app_id.txt','rt') as f:
 	APP_ID = f.readline().strip()
 
 def parse_args():
-
 	parser = argparse.ArgumentParser(description = 'arguments of how to download photos')
 	parser.add_argument('username', type = str, help = 'username to download photos')
 	parser.add_argument('-a','--albumtype', type = str, choices = ['u','U','l','L','c','C','a','A'], default = 'u', help = 'type of photos to download')
 	parser.add_argument('-m','--mode',type=str,choices = ['w','f','r','s','t','W','F','R','S','T'], default = 'f')
 	return parser.parse_args()
 
+
 def get_response(url, payload):
 	r = requests.get(url,params = payload, headers = HEADS)
-	# if r.status_code == 200 and r.text:
 	data = json.loads(r.content.decode('utf-8'))
 	return data, r.status_code
-	# else:
-	# 	# print('no response at all')
-	# 	# print('system exiting')
-	# 	# sys.exit()
-	# 	pass
 
 
 def get_user(username):
 	user_profile, status_code = get_response(BASE_URL+username,{'client_id':APP_ID})
 	if status_code != 200:
-		print(status_code,'- user not found with username "{}"'.format(username),sep = ' ')
-		sys.exit()
+		sys.exit('{} Error - user not found with username "{}"'.format(status_code,username))
 	else:
 	    return user_profile
+
 
 def get_user_uploads(username, mode):
 	user_profile = get_user(username)
 	if user_profile['total_photos'] == 0:
 		print('user have not uploaded anything. No photos to download')
 		return
-	photo_ids = get_photo_ids(BASE_URL+username+'/photos/', user_profile['total_photos'],mode)
+	photo_ids = get_photo_ids(user_profile['links']['photos'], user_profile['total_photos'],mode)
 	user_directory = os.getcwd()+r'/'+user_profile['name']+'-unsplash-uploads-'+mode
 	save_photos(user_directory,photo_ids)
 
@@ -68,7 +63,7 @@ def get_user_likes(username, mode):
 	if user_profile['total_likes'] == 0:
 		print('user have not liked anything. No photos to download')
 		return
-	photo_ids = get_photo_ids(BASE_URL+username+'/likes/', user_profile['total_likes'],mode)
+	photo_ids = get_photo_ids(user_profile['links']['likes'], user_profile['total_likes'],mode)
 	user_directory = os.getcwd()+r'/'+user_profile['name']+'-unsplash-likes-'+mode
 	save_photos(user_directory,photo_ids)
 
@@ -96,6 +91,7 @@ def get_collection_ids(url, total):
 			collection_ids.append({'id':i['id'], 'title':i['title'], 'total_photos':i['total_photos'],'url':i['links']['photos']})
 	return collection_ids
 
+
 def save_photos(user_directory,photo_ids):
 	if not os.path.exists(user_directory):
 		os.makedirs(user_directory)
@@ -106,11 +102,15 @@ def save_photos(user_directory,photo_ids):
 				del photo_ids[pid]
 			except KeyError:
 				print('no photo exists with the ID "{}" on unsplash website'.format(pid))
-	for k,v in photo_ids.items():
-		photo_download_response = requests.get(photo_ids[k],stream = True)
-		with open(user_directory+r'/'+k+'.jpg', 'wb') as out_file:
-		    shutil.copyfileobj(photo_download_response.raw, out_file)
-	print('successfully downloaded {} photos in "{}" folder'.format(len(photo_ids), user_directory[user_directory.rfind('/')+1:]))
+	if not photo_ids:
+		sys.exit('all photos already exists in the {} folder'.format(user_directory[user_directory.rfind('/')+1:]))
+	else:
+		for k,v in photo_ids.items():
+			photo_download_response = requests.get(photo_ids[k],stream = True)
+			with open(user_directory+r'/'+k+'.jpg', 'wb') as out_file:
+			    shutil.copyfileobj(photo_download_response.raw, out_file)
+		print('successfully downloaded {} photos in "{}" folder'.format(len(photo_ids), user_directory[user_directory.rfind('/')+1:]))
+
 
 
 def main():
