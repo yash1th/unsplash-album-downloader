@@ -13,4 +13,4 @@ pip-selfcheck.json
 .DS_Store
 
 #ignore app_id.txt
-Sample/app_id.txt
+sample/app_id.txt
