@@ -8,7 +8,7 @@ import argparse
 
 BASE_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version':'v1'}
-APP_ID = '' #put your application id here
+APP_ID = 'b2b72af949a8f7f5cddfcadcebcbbbd8981be1d99d30261ea5deebf05c7fb54a' #put your application id here
 MODE_LIST= {'w':'raw','f':'full','r':'regular','s':'small','t':'thumb'}
 
 def parse_args():
@@ -17,8 +17,7 @@ def parse_args():
 	parser.add_argument('username', type = str, help = 'username to download photos')
 	parser.add_argument('-a','--albumtype', type = str, choices = ['u','U','l','L'], default = 'u', help = 'type of photos to download')
 	parser.add_argument('-m','--mode',type=str,choices = ['w','f','r','s','t','W','F','R','S','T'], default = 'f')
-	args = parser.parse_args()
-	return args
+	return parser.parse_args()
 
 def get_response(url, payload):
 	r = requests.get(url,params = payload, headers = HEADS)
@@ -99,10 +98,13 @@ def save_photos(photo_ids, name, album_type, mode):
 # 	save_photos(photo_ids, 'Brooke Lark',mode)
 # if r.status_code == 200 and r.text: #need to include this line to check for empty json object (Still a response with 200 code)
 
-
-if __name__ == '__main__':
+def main():
 	args = parse_args()
 	if (args.albumtype).lower() == 'u':
 		get_user_uploads(args.username, MODE_LIST[(args.mode).lower()])
 	if (args.albumtype).lower() == 'l':
 		get_user_likes(args.username, MODE_LIST[(args.mode).lower()])
+
+
+if __name__ == '__main__':
+	main()
