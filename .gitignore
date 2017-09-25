@@ -11,3 +11,6 @@ pip-selfcheck.json
 #system-generated files
 **/.DS_Store
 .DS_Store
+
+#ignore app_id.txt
+Sample/app_id.txt

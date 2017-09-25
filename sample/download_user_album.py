@@ -8,8 +8,11 @@ import argparse
 
 BASE_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version':'v1'}
-APP_ID = 'b2b72af949a8f7f5cddfcadcebcbbbd8981be1d99d30261ea5deebf05c7fb54a' #put your application id here
+APP_ID = '' #put your application id here
 MODE_LIST= {'w':'raw','f':'full','r':'regular','s':'small','t':'thumb'}
+
+with open('app_id.txt','rt') as f:
+	APP_ID = f.readline().strip()
 
 def parse_args():
 
