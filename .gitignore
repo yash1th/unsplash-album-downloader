@@ -17,10 +17,9 @@ pip-selfcheck.json
 **/.DS_Store
 .DS_Store
 
-#ignore files in sample folder
-sample/app_id.txt
-sample/all.sh
-sample/log.txt
-
 #ignore scratch-work folder
 scratch-work/
+
+#ignore app-id.txt
+app_id.txt
+
