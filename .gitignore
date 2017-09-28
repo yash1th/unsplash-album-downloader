@@ -3,6 +3,10 @@ lib/
 bin/
 include/
 
+#pycache
+__pycache__/
+**/__pycache__
+
 #pip-selfcheck
 pip-selfcheck.json
 
@@ -16,6 +20,7 @@ pip-selfcheck.json
 #ignore files in sample folder
 sample/app_id.txt
 sample/all.sh
+sample/log.txt
 
 #ignore scratch-work folder
 scratch-work/
