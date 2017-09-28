@@ -18,7 +18,7 @@ with open('app_id.txt','rt') as f:
 def user_parse_args():
 	parser = argparse.ArgumentParser(description = 'arguments of how to download photos')
 	parser.add_argument('username', type = str, help = 'username to download photos')
-	parser.add_argument('-a','--albumtype', type = str, choices = ['u','U','l','L','c','C','a','A'], default = 'u', help = 'type of photos to download')
+	parser.add_argument('-a','--albumtype', type = str, choices = ['u','U','l','L','c','C','q','Q'], default = 'u', help = 'type of photos to download')
 	parser.add_argument('-m','--mode',type=str,choices = ['w','f','r','s','t','W','F','R','S','T'], default = 'f')
 	return parser.parse_args()
 
@@ -117,7 +117,7 @@ def user_main():
 		get_user_likes(args.username, MODE_LIST[(args.mode).lower()])
 	if (args.albumtype).lower() == 'c':
 		get_user_collections(args.username, MODE_LIST[(args.mode).lower()])
-	if (args.albumtype).lower() == 'a':
+	if (args.albumtype).lower() == 'q':
 		get_user_uploads(args.username, MODE_LIST[(args.mode).lower()])
 		get_user_likes(args.username, MODE_LIST[(args.mode).lower()])
 		get_user_collections(args.username, MODE_LIST[(args.mode).lower()])
@@ -125,4 +125,3 @@ def user_main():
 
 if __name__ == '__main__':
 	user_main()
-    #collection_main()
