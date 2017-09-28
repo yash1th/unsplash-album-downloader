@@ -17,13 +17,14 @@ def get_collections(cid, mode, curated_flag = False):
 
 def collection_main():
     args = collection_parse_args()
-    get_collections(args.collection_id, MODE_LIST[(args.mode).lower()], args.curated)
+    get_collections(args.collection_id, args.size, args.curated)
 
 def collection_parse_args():
     parser = argparse.ArgumentParser(description = 'arguments of how to download collections')
-    parser.add_argument('collection_id', type = str, help = 'id of the collection that needs to be downloaded')
-    parser.add_argument('-c','--curated',action = 'store_true')
-    parser.add_argument('-m','--mode',type=str,choices = ['w','f','r','s','t','W','F','R','S','T'], default = 'f')
+    parser.add_argument('collection_id', type = str.lower, help = 'id of the collection that needs to be downloaded')
+    parser.add_argument('-c','--curated', action = 'store_true', help = 'provide if its a curated collection')
+    parser.add_argument('size',type=str.lower, nargs = '?',  default = 'regular',
+                        choices = ['raw','full','regular','small','thumb'])
     return parser.parse_args()
 
 if __name__ == '__main__':

@@ -6,21 +6,21 @@ import math
 import os
 import argparse
 
-
 USER_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version':'v1'}
-APP_ID = ''
-MODE_LIST= {'w':'raw','f':'full','r':'regular','s':'small','t':'thumb'}
+APP_ID = '' #please provide your app_id here to download photos
 
-with open('app_id.txt','rt') as f:
-	APP_ID = f.readline().strip()
+# with open('app_id.txt','rt') as f:
+# 	APP_ID = f.readline().strip()
 
 def user_parse_args():
-	parser = argparse.ArgumentParser(description = 'arguments of how to download photos')
-	parser.add_argument('username', type = str, help = 'username to download photos')
-	parser.add_argument('-a','--albumtype', type = str, choices = ['u','U','l','L','c','C','q','Q'], default = 'u', help = 'type of photos to download')
-	parser.add_argument('-m','--mode',type=str,choices = ['w','f','r','s','t','W','F','R','S','T'], default = 'f')
-	return parser.parse_args()
+    parser = argparse.ArgumentParser(description = 'arguments of how to download photos')
+    parser.add_argument('username', type = str.lower, help = 'username to download photos')
+    parser.add_argument('albumtype', type = str.lower, nargs = '?', default = 'uploads',
+                        choices = ['uploads','likes','collections','all'], help = 'type of album to download')
+    parser.add_argument('size',type=str.lower, nargs = '?',  default = 'regular',
+                        choices = ['raw','full','regular','small','thumb'])
+    return parser.parse_args()
 
 def get_response(url, payload):
     r = requests.get(url,params = payload, headers = HEADS)
@@ -32,9 +32,8 @@ def get_response(url, payload):
 
 
 def get_user(username):
-	user_profile, status_code = get_response(USER_URL+username,{'client_id':APP_ID})
-	return user_profile
-
+    user_profile, _ = get_response(USER_URL+username,{'client_id':APP_ID})
+    return user_profile
 
 def get_user_uploads(username, mode):
     user_profile = get_user(username)
@@ -44,7 +43,6 @@ def get_user_uploads(username, mode):
     photo_ids = get_photo_ids(user_profile['links']['photos'], user_profile['total_photos'],mode)
     user_directory = os.getcwd()+r'/'+user_profile['name']+'-unsplash-uploads-'+mode
     save_photos(user_directory,photo_ids)
-
 
 def get_photo_ids(url, total, mode):
     total_pages = math.ceil(total/30)
@@ -72,7 +70,7 @@ def get_user_collections(username, mode):
 	if user_profile['total_collections'] == 0:
 		print('no collections to download')
 		return
-	collection_ids = get_collection_ids(USER_URL+username+'/collections/',user_profile['total_collections'])
+	collection_ids = get_collection_ids(USER_URL+user_profile['username']+'/collections/',user_profile['total_collections'])
 	photo_ids = dict()
 	for cid in collection_ids:
 		photo_ids = get_photo_ids(cid['url'], cid['total_photos'],mode)
@@ -110,18 +108,21 @@ def save_photos(user_directory,photo_ids):
 		print('successfully downloaded {} photos in "{}" folder'.format(len(photo_ids), user_directory[user_directory.rfind('/')+1:]))
 
 def user_main():
-	args = user_parse_args()
-	if (args.albumtype).lower() == 'u':
-		get_user_uploads(args.username, MODE_LIST[(args.mode).lower()])
-	if (args.albumtype).lower() == 'l':
-		get_user_likes(args.username, MODE_LIST[(args.mode).lower()])
-	if (args.albumtype).lower() == 'c':
-		get_user_collections(args.username, MODE_LIST[(args.mode).lower()])
-	if (args.albumtype).lower() == 'q':
-		get_user_uploads(args.username, MODE_LIST[(args.mode).lower()])
-		get_user_likes(args.username, MODE_LIST[(args.mode).lower()])
-		get_user_collections(args.username, MODE_LIST[(args.mode).lower()])
+    args = user_parse_args()
+    username = args.username
+    size = args.size
+    albumtype = args.albumtype
+    if albumtype == 'uploads':
+        get_user_uploads(username, size)
+    if albumtype == 'likes':
+    	get_user_likes(username, size)
+    if albumtype == 'collections':
+    	get_user_collections(username, size)
+    if albumtype == 'all':
+        get_user_uploads(username, size)
+        get_user_likes(username, size)
+        get_user_collections(username, size)
 
 
 if __name__ == '__main__':
-	user_main()
+    user_main()
