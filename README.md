@@ -1,4 +1,4 @@
-# Unsplash-Public-Album-Downloader
+# Unsplash Public Album Downloader
 
 Using this script you will be able to download the entire album of a user (uploads, likes or collections) or a just collection (by specifying Collection-ID) in any size you like.
 
