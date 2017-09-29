@@ -1,6 +1,6 @@
 # Unsplash-Public-Album-Downloader
 
-Using this script you will be able to download the entire album of a user (uploads, likes or collections) or a just collection (by specifying Collection-ID) in a size you like.
+Using this script you will be able to download the entire album of a user (uploads, likes or collections) or a just collection (by specifying Collection-ID) in any size you like.
 
 
 Dependencies
@@ -71,7 +71,7 @@ For downloading a particular collection, simply run
 python download_collection_album.py [collection-id] [curated flag] [size]
 ```
 
-* ```collection-id``` is the id of the collection-id
+* ```collection-id``` is the id of the collection
 
 * ```size``` is similar to above and takes the same values
 
@@ -79,7 +79,7 @@ Please include a ```-c``` flag when it's a curated collection you are trying to 
 ```
 python download_collection_album.py 160 -c full
 ```
-downloads the collection with id #160 (which is a curated collection). So, we have to include the ```-c``` flag.
+downloads the collection with id #160 (which is a curated collection) in a full size. So, we have to include the ```-c``` flag.
 
 app_id text file
 -------
