@@ -10,8 +10,9 @@ USER_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version':'v1'}
 APP_ID = '' #please provide your app_id here to download photos
 
-# with open('app_id.txt','rt') as f:
-# 	APP_ID = f.readline().strip()
+if not APP_ID:
+    with open('app_id.txt','rt') as f:
+    	APP_ID = f.readline().strip()
 
 def user_parse_args():
     parser = argparse.ArgumentParser(description = 'arguments of how to download photos')
