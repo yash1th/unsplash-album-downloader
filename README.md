@@ -31,7 +31,7 @@ Before running the script, please assign a **Application ID** to **APP_ID** vari
 python download_user_album.py [username] [albumtype] [size]
 ```
 
-By default, if no flags are passed, the script will download all the ```uploads``` of the user (If any) in a ```regular``` size. To customize the nature of downloads, Please include following flags
+**Username** is mandatory and by default, if no flags are passed, the script will download all the ```uploads``` of the user (If any) in a ```regular``` size. To customize the nature of downloads, Please include following flags
 
 
 ```albumtype```  takes the following values -
@@ -51,11 +51,11 @@ By default, if no flags are passed, the script will download all the ```uploads`
 
 * ```full``` to download the full size
 
-* ```regular``` to download the full size
+* ```regular``` to download the regular size
 
-* ```small``` to download the full size
+* ```small``` to download the small size
 
-* ```thumb``` to download the full size
+* ```thumb``` to download the thumb size
 
 Example :
 -----
