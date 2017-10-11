@@ -23,3 +23,6 @@ scratch-work/
 #ignore app-id.txt
 app_id.txt
 log.txt
+
+#ignore vscode
+.vscode/

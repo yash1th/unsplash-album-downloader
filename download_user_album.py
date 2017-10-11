@@ -45,17 +45,6 @@ def get_user_uploads(username, mode):
     user_directory = os.getcwd()+r'/'+user_profile['name']+'-unsplash-uploads-'+mode
     save_photos(user_directory,photo_ids)
 
-def get_photo_ids(url, total, mode):
-    total_pages = math.ceil(total/30)
-    photo_ids = dict()
-    for page_number in range(1,total_pages+1):
-        payload = {'client_id':APP_ID,'page':str(page_number),'per_page':'30'}
-        photos_list_response, status_code = get_response(url,payload)
-        for i in photos_list_response:
-            photo_ids[i['id']] = i['urls'][mode]
-    return photo_ids
-
-
 def get_user_likes(username, mode):
 	user_profile = get_user(username)
 	if user_profile['total_likes'] == 0:
@@ -79,6 +68,17 @@ def get_user_collections(username, mode):
 		save_photos(user_directory,photo_ids)
 
 
+def get_photo_ids(url, total, mode):
+    total_pages = math.ceil(total/30)
+    photo_ids = dict()
+    for page_number in range(1,total_pages+1):
+        payload = {'client_id':APP_ID,'page':str(page_number),'per_page':'30'}
+        photos_list_response, status_code = get_response(url,payload)
+        for i in photos_list_response:
+            photo_ids[i['id']] = i['urls'][mode]
+    return photo_ids
+
+
 def get_collection_ids(url, total):
 	total_pages = math.ceil(total/30)
 	collection_ids = list()
@@ -88,6 +88,7 @@ def get_collection_ids(url, total):
 		for i in collection_ids_list:
 			collection_ids.append({'id':i['id'], 'title':i['title'], 'total_photos':i['total_photos'],'url':i['links']['photos']})
 	return collection_ids
+
 
 def save_photos(user_directory,photo_ids):
 	if not os.path.exists(user_directory):
@@ -107,6 +108,7 @@ def save_photos(user_directory,photo_ids):
 			with open(user_directory+r'/'+k+'.jpg', 'wb') as out_file:
 			    shutil.copyfileobj(photo_download_response.raw, out_file)
 		print('successfully downloaded {} photos in "{}" folder'.format(len(photo_ids), user_directory[user_directory.rfind('/')+1:]))
+
 
 def user_main():
     args = user_parse_args()
