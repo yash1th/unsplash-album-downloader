@@ -12,7 +12,7 @@ def get_collections(cid, mode, curated_flag = False):
         collection, s = get_response(COLLECTION_URL+cid,{'client_id':APP_ID})
         title = title+'collection-'
     photo_ids = get_photo_ids(collection['links']['photos'],collection['total_photos'], mode)
-    user_directory = os.getcwd()+r'/'+collection['user']['name']+title+collection['title']+'-'+mode
+    user_directory = os.getcwd()+r'/'+collection['user']['name']+title+collection['title'].replace('/', '_')+'-'+mode #replaces / with underscore
     save_photos(user_directory, photo_ids)
 
 def collection_main():
