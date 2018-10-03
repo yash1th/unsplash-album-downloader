@@ -25,7 +25,7 @@ The rest is the same.
 Using script
 -----
 
-Before running the script, please assign a **Application ID** to **APP_ID** variable in the python script **download_user_album.py**. If you do not have one, you can create [here](https://unsplash.com/documentation#creating-a-developer-account). For downloading user albums, simply run:
+Before running the script, please assign an **Access Key** to **APP_ID** variable in the python script **download_user_album.py**. If you do not have one, you can create [here](https://unsplash.com/documentation#creating-a-developer-account). For downloading user albums, simply run:
 
 ```
 python download_user_album.py [username] [albumtype] [size]
@@ -84,7 +84,7 @@ downloads the collection with id #160 (which is a curated collection) in a full 
 app_id text file
 -------
 
-You can also include the application ID in **app_id.txt** file. Make sure the file is in the same location as the above scripts.
+You can also include the access key in **app_id.txt** file. Make sure the file is in the same location as the above scripts.
 
 Downloaded files
 -----
