@@ -5,14 +5,20 @@ import shutil
 import math
 import os
 import argparse
+import configparser
 
 USER_URL = 'https://api.unsplash.com/users/'
 HEADS = {'Accept-Version': 'v1'}
-APP_ID = ''  # please provide your app_id here to download photos
+ACCESS_KEY = ''  # please provide your access key here to download photos
 
-if not APP_ID:
-    with open('app_id.txt', 'rt') as f:
-        APP_ID = f.readline().strip()
+if not ACCESS_KEY:
+    if not os.path.isfile(os.curdir + 'config.ini'):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        ACCESS_KEY = config['UNSPLASH']['ACCESS_KEY']
+    else:
+        print("cannot find access key. Please check inside the code or config.ini file")
+        sys.exit()
 
 
 def user_parse_args():
@@ -35,7 +41,7 @@ def get_response(url, payload):
 
 
 def get_user(username):
-    user_profile, _ = get_response(USER_URL + username, {'client_id': APP_ID})
+    user_profile, _ = get_response(USER_URL + username, {'client_id': ACCESS_KEY})
     return user_profile
 
 
@@ -78,7 +84,7 @@ def get_photo_ids(url, total, mode):
     total_pages = math.ceil(total / 30)
     photo_ids = dict()
     for page_number in range(1, total_pages + 1):
-        payload = {'client_id': APP_ID, 'page': str(page_number), 'per_page': '30'}
+        payload = {'client_id': ACCESS_KEY, 'page': str(page_number), 'per_page': '30'}
         photos_list_response, status_code = get_response(url, payload)
         for i in photos_list_response:
             photo_ids[i['id']] = i['urls'][mode]
@@ -89,7 +95,7 @@ def get_collection_ids(url, total):
     total_pages = math.ceil(total / 30)
     collection_ids = list()
     for page_number in range(1, total_pages + 1):
-        payload = {'client_id': APP_ID, 'page': str(page_number), 'per_page': '30'}
+        payload = {'client_id': ACCESS_KEY, 'page': str(page_number), 'per_page': '30'}
         collection_ids_list, status_code = get_response(url, payload)
         for i in collection_ids_list:
             collection_ids.append(
