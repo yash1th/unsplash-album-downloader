@@ -6,10 +6,10 @@ COLLECTION_URL = 'https://api.unsplash.com/collections/'
 def get_collections(cid, mode, curated_flag=False):
     title = '-unsplash-'
     if curated_flag:
-        collection, s = get_response(COLLECTION_URL + 'curated/' + cid, {'client_id': APP_ID})
+        collection, s = get_response(COLLECTION_URL + 'curated/' + cid, {'client_id': ACCESS_KEY})
         title = '-curated' + title
     else:
-        collection, s = get_response(COLLECTION_URL + cid, {'client_id': APP_ID})
+        collection, s = get_response(COLLECTION_URL + cid, {'client_id': ACCESS_KEY})
         title = title + 'collection-'
     photo_ids = get_photo_ids(collection['links']['photos'], collection['total_photos'], mode)
     user_directory = os.getcwd() + r'/' + collection['user']['name'] + title + collection['title'].replace('/',
