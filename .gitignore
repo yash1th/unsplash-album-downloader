@@ -26,3 +26,6 @@ log.txt
 
 #ignore vscode
 .vscode/
+
+#ignore idea
+.idea/
